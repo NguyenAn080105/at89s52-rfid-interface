@@ -125,8 +125,3 @@ This project was created by students of UIT - University of Information Technolo
 - Nguyễn Ngô Đình Ân
 - Nguyễn Phạm Thiên Ân
 - Hồ Thiện Nhân
-
----
-
-## 📁 Repository Structure
-
