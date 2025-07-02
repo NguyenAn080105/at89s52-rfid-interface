@@ -1,0 +1,206 @@
+C51 COMPILER V9.60.7.0   THU_VIEN_LCD_I2C                                                  05/24/2025 20:30:10 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE THU_VIEN_LCD_I2C
+OBJECT MODULE PLACED IN .\Objects\Thu_Vien_LCD_I2C.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Thu_Vien_LCD_I2C.c OPTIMIZE(8,SPEED) BROWSE INCDIR(..\at89s52_rfid) DEBU
+                    -G OBJECTEXTEND PRINT(.\Listings\Thu_Vien_LCD_I2C.lst) TABS(2) OBJECT(.\Objects\Thu_Vien_LCD_I2C.obj)
+
+line level    source
+
+   1          #include <REGX51.H>
+   2          #include <intrins.h>
+   3          #include <Thu_Vien_LCD_I2C.h>
+   4          
+   5          unsigned char slave_add;
+   6          
+   7          sbit sda=P1^2;
+   8          sbit scl=P1^3;
+   9          
+  10          void i2c_start(void)
+  11          {
+  12   1        sda=1;_nop_();_nop_();
+  13   1        scl=1;_nop_();_nop_();
+  14   1        sda=0;_nop_();_nop_();
+  15   1      }
+  16          
+  17          void i2c_stop(void)
+  18          {
+  19   1        scl=0;
+  20   1        sda=0;
+  21   1        scl=1;
+  22   1        sda=1;
+  23   1      }
+  24          
+  25          void LCD_Slave(unsigned char slave)
+  26          {
+  27   1          slave_add = (slave << 1);
+  28   1      }
+  29          
+  30          void i2c_ACK(void)
+  31          {
+  32   1        scl=0;
+  33   1        sda=1;
+  34   1        scl=1;
+  35   1        while(sda);
+  36   1      }
+  37          
+  38          void i2c_write(unsigned char dat)
+  39          {
+  40   1        unsigned char i;
+  41   1        for(i=0;i<8;i++)
+  42   1        {
+  43   2        scl=0;
+  44   2        sda=(dat&(0x80)>>i)?1:0;
+  45   2        scl=1;
+  46   2        }
+  47   1      }
+  48          
+  49          void lcd_send_cmd(unsigned char cmd)
+  50          {
+  51   1        unsigned char cmd_l,cmd_u;
+  52   1        
+  53   1        cmd_l=(cmd<<4)&0xf0;
+  54   1        cmd_u=(cmd &0xf0);
+C51 COMPILER V9.60.7.0   THU_VIEN_LCD_I2C                                                  05/24/2025 20:30:10 PAGE 2   
+
+  55   1        
+  56   1        i2c_start();       //BL EN RW RS 1 1 0 0
+  57   1        i2c_write(slave_add);
+  58   1        i2c_ACK();
+  59   1        i2c_write(cmd_u|0x0C);
+  60   1        i2c_ACK();
+  61   1        delay_ms(1);
+  62   1        i2c_write(cmd_u|0x08); // 1 0 0 0
+  63   1        i2c_ACK();
+  64   1        delay_ms(1);
+  65   1        i2c_write(cmd_l|0x0C);   // 1 1 0 0
+  66   1        i2c_ACK();
+  67   1        delay_ms(1);
+  68   1        i2c_write(cmd_l|0x08);
+  69   1        i2c_ACK();
+  70   1        delay_ms(1);
+  71   1        i2c_stop();
+  72   1      }
+  73          
+  74          void LCD_Send_Data(unsigned char dataw)// 1 1 0 1
+  75          {
+  76   1        unsigned char dataw_l,dataw_u;
+  77   1        dataw_l=(dataw<<4)&0xf0;
+  78   1        dataw_u=(dataw &0xf0);
+  79   1        i2c_start();
+  80   1        i2c_write(slave_add);
+  81   1        i2c_ACK();
+  82   1        i2c_write(dataw_u|0x0D);//BL EN RW RS   1 1 0 1
+  83   1        i2c_ACK();
+  84   1        delay_ms(1);
+  85   1        i2c_write(dataw_u|0x09);// 1 0 0 1
+  86   1        i2c_ACK();
+  87   1        delay_ms(1);
+  88   1        i2c_write(dataw_l|0x0D);
+  89   1        i2c_ACK();
+  90   1        delay_ms(1);
+  91   1        i2c_write(dataw_l|0x09);
+  92   1        i2c_ACK();
+  93   1        delay_ms(1);
+  94   1        i2c_stop();
+  95   1      }
+  96          
+  97          void LCD_Send_String(unsigned char *p)
+  98          {
+  99   1        while(*p != '\0')
+ 100   1        LCD_Send_Data(*p++);
+ 101   1      }
+ 102          
+ 103          
+ 104          void delay_ms(unsigned int n)
+ 105          {
+ 106   1        unsigned int m;
+ 107   1        for(n;n>0;n--)
+ 108   1        {
+ 109   2          for(m=121;m>0;m--);
+ 110   2          _nop_();
+ 111   2          _nop_();
+ 112   2          _nop_();
+ 113   2          _nop_();
+ 114   2          _nop_();
+ 115   2          _nop_();
+ 116   2        }
+C51 COMPILER V9.60.7.0   THU_VIEN_LCD_I2C                                                  05/24/2025 20:30:10 PAGE 3   
+
+ 117   1      }
+ 118          
+ 119          void LCD_Init()
+ 120          {
+ 121   1        lcd_send_cmd(0x02); // Return home
+ 122   1        lcd_send_cmd(0x28); // 4 bit mode
+ 123   1        lcd_send_cmd(0x0C); // Display On , cursor off
+ 124   1        lcd_send_cmd(0x06); // Increment Cursor (shift cursor to right)
+ 125   1        lcd_send_cmd(0x01); // clear display
+ 126   1      }
+ 127          
+ 128          void LCD_Gotoxy (int col, int row)
+ 129          {
+ 130   1        int pos_Addr;
+ 131   1        if(row == 1) 
+ 132   1        {
+ 133   2          pos_Addr = 0x80 + row - 2 + col;
+ 134   2        }
+ 135   1        else
+ 136   1        {
+ 137   2          pos_Addr = 0x80 | (0x40 + col - 1);
+ 138   2        }
+ 139   1        lcd_send_cmd(pos_Addr);
+ 140   1      }
+ 141          
+ 142          void LCD_Send_Number(int number)
+ 143          {
+ 144   1        if(number <= 9)
+ 145   1        {
+ 146   2          LCD_Send_Data(number + 48);
+ 147   2        }
+ 148   1        else if(number > 9 && number < 100)
+ 149   1        {
+ 150   2          LCD_Send_Data(number/10 + 48);
+ 151   2          LCD_Send_Data(number%10 + 48);
+ 152   2        }
+ 153   1        else if(number > 99 && number < 1000)
+ 154   1        {
+ 155   2          LCD_Send_Data(number/100 + 48);
+ 156   2          LCD_Send_Data(number/10%10 + 48);
+ 157   2          LCD_Send_Data(number%10 + 48);
+ 158   2        }
+ 159   1        else if(number > 999 && number < 10000)
+ 160   1        {
+ 161   2          LCD_Send_Data(number/1000 + 48);
+ 162   2          LCD_Send_Data(number/100%10 + 48);
+ 163   2          LCD_Send_Data(number/10%10 + 48);
+ 164   2          LCD_Send_Data(number%10 + 48);
+ 165   2        }
+ 166   1      }
+ 167          
+ 168          void LCD_Clear()
+ 169          {
+ 170   1        LCD_Gotoxy(1,1);
+ 171   1        LCD_Send_String("                ");
+ 172   1        LCD_Gotoxy(1,2);
+ 173   1        LCD_Send_String("                ");
+ 174   1      }
+ 175          
+ 176          
+
+
+C51 COMPILER V9.60.7.0   THU_VIEN_LCD_I2C                                                  05/24/2025 20:30:10 PAGE 4   
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    591    ----
+   CONSTANT SIZE    =     17    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1      11
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
