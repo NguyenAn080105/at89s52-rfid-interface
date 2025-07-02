@@ -99,10 +99,12 @@ Written in C using Keil uVision. Key modules:
 
 ---
 
-## 📷 Screenshots
+## 📷 Real Hardware circuit
+![Fully assembled and working hardware](assets/hardware.jpg)
+*Figure 1: Fully assembled and working hardware circuit after successful testing*
 
-<img src="https://github.com/NguyenAn080105/at89s52_rfid/assets/demo-proteus.png" alt="Proteus Simulation Result" width="500"/>
-<img src="https://github.com/NguyenAn080105/at89s52_rfid/assets/demo-hardware.jpg" alt="Real Hardware Result" width="500"/>
+### 🎬 Video Demo (Google Drive)
+[Click here to watch on Google Drive](https://drive.google.com/file/d/VIDEO_ID/view)
 
 ---
 
