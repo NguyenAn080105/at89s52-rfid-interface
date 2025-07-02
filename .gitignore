@@ -53,3 +53,16 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+# Keil build folders
+Objects/
+Listings/
+
+# Keil personal files
+*.uvopt
+*.uvgui.*
+
+# Thumbs.db or system files
+Thumbs.db
+.DS_Store
+
