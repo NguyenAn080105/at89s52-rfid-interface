@@ -100,7 +100,7 @@ Written in C using Keil uVision. Key modules:
 ---
 
 ## 📷 Real Hardware circuit
-![Fully assembled and working hardware](assets/hardware.jpg)
+![Fully assembled and working hardware](assets/finalcircuit.jpg)
 *Figure 1: Fully assembled and working hardware circuit after successful testing*
 
 ### 🎬 Video Demo (Google Drive)
