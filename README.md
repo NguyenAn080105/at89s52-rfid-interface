@@ -24,7 +24,7 @@ This project demonstrates a simple embedded system built using the AT89S52 (8051
 | Buzzer         | Audio signal feedback device         |
 | Power Supply   | 5V regulated                         |
 | Crystal Osc.   | 11.0592 MHz for UART compatibility   |
-| 10 µF capacitor + 8.2 kΩ resistor + 30 pF             |
+| 10 µF & 30 pF capacitor + 8.2 kΩ resistor             |
 
 ---
 
