@@ -105,7 +105,7 @@ Written in C using Keil uVision. Key modules:
 *Figure 1: Fully assembled and working hardware circuit after successful testing*
 
 ### 🎬 Video Demo (Google Drive)
-[Click here to watch on Google Drive](https://drive.google.com/file/d/VIDEO_ID/view)
+[Click here to watch on Google Drive]([https://drive.google.com/file/d/VIDEO_ID/view](https://drive.google.com/file/d/1musFjKZ1y6vBk3smRdCva0AgJCc36SQ1/view?usp=sharing))
 
 ---
 
