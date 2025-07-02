@@ -1,0 +1,1 @@
+"mfrc522.c" OPTIMIZE (8,SPEED) BROWSE INCDIR(..\at89s52_rfid) DEBUG OBJECTEXTEND PRINT(.\Listings\mfrc522.lst) TABS (2) OBJECT(.\Objects\mfrc522.obj)

@@ -1,0 +1,5 @@
+".\Objects\Thu_Vien_LCD_I2C.obj",
+".\Objects\main.obj",
+".\Objects\mfrc522.obj" 
+TO ".\Objects\8051_interface_rfid" 
+PRINT(".\Listings\8051_interface_rfid.m51") RAMSIZE(256) 
